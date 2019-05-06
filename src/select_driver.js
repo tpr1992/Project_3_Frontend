@@ -13,7 +13,7 @@ fetch("http://localhost:3000/cars")
 .then(res => res.json())
 .then((allCars) => {
   allCars.forEach(car => {
-    carCard.innerHTML += createCarCard(car)
+    // carCard.innerHTML += createCarCard(car)
   })
 })
 
@@ -23,6 +23,9 @@ carCard.addEventListener('click', (event) => {
     console.log('hello')
   }
 })
+
+
+
 
 
 const createCarCard = (car) => {
