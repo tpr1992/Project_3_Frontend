@@ -9,6 +9,8 @@ let carCard = document.querySelector('.car-options')
 
 let images = document.querySelectorAll('#image')
 
+const mainTextArea2 = document.querySelector('.main-text-area')
+
 fetch("http://localhost:3000/cars")
 .then(res => res.json())
 .then((allCars) => {
@@ -17,12 +19,6 @@ fetch("http://localhost:3000/cars")
   })
 })
 
-carCard.addEventListener('click', (event) => {
-
-  if (event.target.tagName === "IMG") {
-    console.log('hello')
-  }
-})
 
 
 
