@@ -44,9 +44,11 @@ startGameBtn.addEventListener('click', event => {
           <li class="list-group-item">Torque</li>
           <li class="list-group-item">Weight</li>
           </ul>
-          <div class="card-body" id="start-race-${user.id}">
+          <div id='start-race'>
+          <div class="card-body" data-id="${user.id}">
           <a href="#" class="btn btn-primary" style="background-color: black; border-color: black" >Start Race</a>
           <a id="customize-btn" href="#" class="btn btn-primary" style="background-color: black; border-color: black">Customize</a>
+          </div>
           </div>
           </div>
           </div>
@@ -62,13 +64,13 @@ startGameBtn.addEventListener('click', event => {
             customizeBtn.addEventListener('click', (event) => {
               console.log('jfdjkfdkj')
             })
-            let startBtn = document.getElementById(`start-race-${user.id}`)
+            let startBtn = document.querySelector(`#start-race`)
             startBtn.addEventListener('click', event => {
               mainTextArea.innerHTML = ""
               console.log('start race')
               // loop()
               if (event.target.innerText != 'Start Race') {
-                noloop()
+                noLoop()
               }
               else {
                 console.log('hi')
@@ -82,29 +84,31 @@ startGameBtn.addEventListener('click', event => {
           }
         })
         // Select player by photo
-        mainTextArea.addEventListener('click', (event) => {
-          if (event.target.tagName === "IMG" && event.target.dataset.set == `${user.id}`) {
-            mainTextArea.innerHTML = ""
-            mainTextArea.innerHTML = createUserProfile(user)
-            let startBtn = document.getElementById(`start-race-${user.id}`)
-            startBtn.addEventListener('click', event => {
-              mainTextArea.innerHTML = ""
-              console.log('start race')
-              // loop()
-              if (event.target.innerText != 'Start Race') {
-                noloop()
-              }
-              else {
-                console.log('hi')
-                loop()
-                // setTimeout(function () {
-                //   remove()
-                // }, 2000);
-              }
-              redraw()
-            })
-          }
-        })
+        // mainTextArea.addEventListener('click', (event) => {
+        //   if (event.target.tagName === "IMG" && event.target.dataset.set == `${user.id}`) {
+        //     mainTextArea.innerHTML = ""
+        //     mainTextArea.innerHTML = createUserProfile(user)
+        //     let startBtn = document.getElementById(`start-race-${user.id}`)
+        //     startBtn.addEventListener('click', event => {
+        //       mainTextArea.innerHTML = ""
+        //       console.log('start race')
+        //       // loop()
+        //       if (event.target.innerText != 'Start Race') {
+        //         noloop()
+        //       }
+        //       else {
+        //         console.log('hi')
+        //         loop()
+        //         // setTimeout(function () {
+        //         //   remove()
+        //         // }, 2000);
+        //       }
+        //       redraw()
+        //       debugger;
+        //       // startRace(user);
+        //     })
+        //   }
+        // })
       })
     })
   }
@@ -141,7 +145,7 @@ recordsBtn.addEventListener('click', event => {
       .then((users) => {
         users.forEach(user => {
           if (userId === user.id) {
-            tableBody.innerHTML += `<tr>
+            tableBody.innerHTML += `<tr data-id="${user.id}">
             <td>${user.name}</td>
             <td>${record.id}</td>
             <td>${record.wins}</td>

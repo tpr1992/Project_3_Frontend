@@ -1,3 +1,4 @@
+
 let car1;
 
 function setup() {
@@ -47,10 +48,10 @@ document.addEventListener("keydown", function(e) {
 // Set power of car
 const moveCar = (horsepower) => {
   if (horsepower < 200) {
-    PLAYERSPEED += 13
+    PLAYERSPEED += 17
   }
   else if (horsepower >= 200 && horsepower < 350) {
-    PLAYERSPEED += 25
+    PLAYERSPEED += 28
   }
   else if (horsepower >= 350 && horsepower < 500) {
     PLAYERSPEED += 35
@@ -66,29 +67,77 @@ document.addEventListener("keyup", (e) => {
   PLAYERSPEED += 50
 })
 
+
 function draw() {
   // if (true) {
     background(backGround);
     fill(255);
     noStroke();
     textAlign(CENTER, CENTER);
-    text("use arrow keys, or SPACE to stop",
-    width/2, height*0.67);
+    // text("use arrow keys, or SPACE to stop",
+    // width/2, height*0.67);
     image(car1, SPEED, 215, car1.width/6, car1.height/6)
     SPEED += 10
     image(car2, PLAYERSPEED, 270, car2.width/6, car2.height/6)
-    endGame()
-  // }
+    // drawWords(width * 0.5)
+    if (SPEED > window.innerWidth){
+      textSize(75)
+      textAlign(CENTER, CENTER)
+      stroke('#222222');
+      strokeWeight(4);
+      text("YOU LOST!",800,200)
+      noLoop()
+      }
+    else if (PLAYERSPEED > window.innerWidth) {
+      textSize(75)
+      textAlign(CENTER, CENTER)
+      stroke('#222222');
+      strokeWeight(4);
+      text("YOU WON!", 800, 200)
+
+      fetch(`http://localhost:3000/records/`,{
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'applica'
+        },
+        body: JSON.stringify({
+
+        })
+      })
+      .then(res => res.json())
+      .then((allRecords) => {
+        allRecords.forEach((record) => {
+          console.log(record.wins)
+        })
+      })
+
+      noLoop()
+      }
 }
 
-function endGame(){
-  console.log("hit here 1", PLAYERSPEED, window.innerWidth)
+// function win(){
+//   if (SPEED > window.innerWidth){
+//     textSize(50)
+//     text("YOU LOST!",800,200)
+//     }
+//   else if (PLAYERSPEED > window.innerWidth) {
+//     textSize(50)
+//     text("YOU WON!", 800, 200)
+//     }
+// }
 
-  if (PLAYERSPEED > window.innerWidth){
-    console.log("hit here 2", window.innerWidth)
-    alert("hello")
-    
-  }
-}
 
-// endGame();
+// function drawWords(x){
+//   fill(0);
+//   text("YOU WON", 200,100)
+// }
+// function endGame(){
+//   console.log("hit here 1", PLAYERSPEED, window.innerWidth)
+//   if (SPEED > window.innerWidth){
+//     alert('YOU LOST!')
+//   }
+//   if (PLAYERSPEED >= window.innerWidth){
+//     console.log("hit here 2", window.innerWidth)
+//     alert("YOU WON!")
+//   }
+// }
