@@ -22,14 +22,7 @@ butt.addEventListener('click', event => {
       mainTitle.innerHTML = "Choose Your Player"
       mainTextArea.innerHTML = ""
       users.forEach(user => {
-        console.log(user)
         mainTextArea.innerHTML += createUserList2(user)
-        if (event.target.tagName === "IMG") {
-          mainTextArea.innerHTML = ""
-          mainTextArea.innerHTML = showUserProfile()
-
-        }
-
         const showUserProfile = (user) => {
           return `
           <div align="center">
@@ -38,16 +31,16 @@ butt.addEventListener('click', event => {
           <img class="card-img-top" src="https://files.gamebanana.com/img/ico/sprays/mariokart.png" alt="Card image cap">
           <div class="card-body">
           <h5 class="card-title">${user.name}</h5>
-          <p class="card-text">Tagline lkdflkdsflkj</p>
+          <p class="card-text">${user.tagline}</p>
           </div>
           <ul class="list-group list-group-flush">
-          <li class="list-group-item">Horsepower</li>
+          <li class="list-group-item">$${user.money}</li>
+          <li class="list-group-item">HP</li>
           <li class="list-group-item">Torque</li>
           <li class="list-group-item">Weight</li>
           </ul>
           <div class="card-body">
           <a href="#" class="btn btn-primary" style="background-color: black; border-color: black" >Start Race</a>
-
           <a id="btn" href="#" class="btn btn-primary" style="background-color: black; border-color: black">Customize</a>
           </div>
           </div>
@@ -59,9 +52,23 @@ butt.addEventListener('click', event => {
         mainTextArea.addEventListener('click', (event) => {
           if (event.target.tagName === "IMG") {
             mainTextArea.innerHTML = ""
-            mainTextArea.innerHTML = showUserProfile()
+            mainTextArea.innerHTML = showUserProfile(user)
+            console.log('line 62')
 
           }
+
+
+
+
+
+        // if (event.target.tagName === "IMG") {
+        //   mainTextArea.innerHTML = ""
+        //   mainTextArea.innerHTML = showUserProfile(user)
+        //   console.log('hello')
+        //
+        // }
+
+
 
         // when you click customize
           // let customizeCarButton = document.querySelector('#customize-car')
@@ -105,7 +112,6 @@ const createTable = () => {
   </tr>
   </thead>
   <tbody id="table-body">
-
   </tbody>
   </table>`
 }
@@ -143,13 +149,13 @@ recordsButt.addEventListener('click', event => {
   })
 })
 
-mainTextArea.addEventListener('click', (event) => {
-
-  if (event.target.tagName === "IMG") {
-    console.log('fkdfjkdfkjdfkj')
-    showUserProfile()
-  }
-})
+// mainTextArea.addEventListener('click', (event) => {
+//
+//   if (event.target.tagName === "IMG") {
+//     console.log('fkdfjkdfkjdfkj')
+//     showUserProfile()
+//   }
+// })
 
 
 // const createUserList = (user) => {
