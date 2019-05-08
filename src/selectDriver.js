@@ -1,16 +1,8 @@
-
-
-function log() {
-  console.log('hit here')
-}
-log()
-
 let carCard = document.querySelector('.car-options')
-
 let images = document.querySelectorAll('#image')
 
-const mainTextArea2 = document.querySelector('.main-text-area')
 
+const mainTextArea2 = document.querySelector('.main-text-area')
 fetch("http://localhost:3000/cars")
 .then(res => res.json())
 .then((allCars) => {
@@ -18,12 +10,6 @@ fetch("http://localhost:3000/cars")
     // carCard.innerHTML += createCarCard(car)
   })
 })
-
-
-
-
-
-
 const createCarCard = (car) => {
   return `<div class="card-group">
   <div class="card">
