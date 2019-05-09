@@ -132,29 +132,7 @@ const createTable = () => {
 // Add event listener to Records button
 recordsBtn.addEventListener('click', event => {
   mainTitle.innerHTML = "High Scores"
-  fetch("http://localhost:3000/records")
-  .then(res => res.json())
-  .then((allRecords) => {
-    mainTextArea.innerHTML = createTable()
-    let tableBody = document.querySelector('#table-body')
-    remove()
-    allRecords.forEach(record => {
-      let userId = record.user_id
-      fetch("http://localhost:3000/users")
-      .then(res => res.json())
-      .then((users) => {
-        users.forEach(user => {
-          if (userId === user.id) {
-            tableBody.innerHTML += `<tr data-id="${user.id}">
-            <td>${user.name}</td>
-            <td>${record.id}</td>
-            <td>${record.wins}</td>
-            </tr>`
-          }
-        })
-      })
-    })
-  })
+
 })
 
 // Create HTML for users list

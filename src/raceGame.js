@@ -37,7 +37,7 @@ PLAYERSPEED = 0
 document.addEventListener("keydown", function(e) {
   e = e || window.event;
   if (e.keyCode == "39") {
-    moveCar(300)
+    moveCar(700)
     console.log('right')
   }
   else if (e.keyCode == "40") {
@@ -59,13 +59,10 @@ const moveCar = (horsepower) => {
   else if (horsepower >= 500) {
     PLAYERSPEED += 50
   }
+  else if (horsepower >= 700) {
+    PLAYERSPEED += 70
+  }
 }
-
-
-// If key is held down, increment speed/position by 50
-document.addEventListener("keyup", (e) => {
-  PLAYERSPEED += 50
-})
 
 
 function draw() {
@@ -85,7 +82,7 @@ function draw() {
       textAlign(CENTER, CENTER)
       stroke('#222222');
       strokeWeight(4);
-      text("YOU LOST!",800,200)
+      text("YOU LOST!",windowWidth / 2, 200)
       noLoop()
       }
     else if (PLAYERSPEED > window.innerWidth) {
@@ -93,23 +90,37 @@ function draw() {
       textAlign(CENTER, CENTER)
       stroke('#222222');
       strokeWeight(4);
-      text("YOU WON!", 800, 200)
-
-      fetch(`http://localhost:3000/records/`,{
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'applica'
-        },
-        body: JSON.stringify({
-
-        })
-      })
+      text("YOU WON!", windowWidth / 2, 200)
+      fetch("http://localhost:3000/records")
       .then(res => res.json())
       .then((allRecords) => {
-        allRecords.forEach((record) => {
-          console.log(record.wins)
+        allRecords.forEach(record => {
+          console.log(record.user_id)
+        })
+     fetch(`http://localhost:3000/users`)
+        .then(res => res.json())
+        .then((users) => {
+          users.forEach((user) => {
+            debugger;
+            if (user.id) {}
+          })
         })
       })
+
+
+
+
+
+
+      // fetch(`http://localhost:3000/records/`,{
+        //   method: 'PATCH',
+        //   headers: {
+          //     'Content-Type': 'applica'
+          //   },
+          //   body: JSON.stringify({
+            //
+            //   })
+            // })
 
       noLoop()
       }
