@@ -7,14 +7,14 @@ let scoreBoard = document.querySelector('.scoreboard')
 let mainTextArea = document.querySelector('.main-text-area')
 let tableRow = document.getElementById('table-row')
 let recordsBtn = document.querySelector('#records-butt')
-
+let selectedId;
 
 // ------------------------------Main Functions-------------------------------- //
 
 // Click on Start Game
 startGameBtn.addEventListener('click', event => {
-  if (mainTextArea.innerHTML.length === 0) {
-  }
+  // if (mainTextArea.innerHTML.length === 0) {
+  // }
   if (mainTextArea.innerHTML.length > 0) {
 
     // Fetch users
@@ -33,7 +33,7 @@ startGameBtn.addEventListener('click', event => {
           <div align="center">
           <div class="col-xl">
           <div class="card" style="width: 28rem;">
-          <img class="card-img-top" src="https://files.gamebanana.com/img/ico/sprays/mariokart.png" alt="Card image cap">
+          <img class="card-img-top" src="${user.image_url}" alt="Card image cap">
           <div class="card-body">
           <h5 class="card-title">${user.name}</h5>
           <p class="card-text">${user.tagline}</p>
@@ -68,18 +68,34 @@ startGameBtn.addEventListener('click', event => {
             startBtn.addEventListener('click', event => {
               mainTextArea.innerHTML = ""
               console.log('start race')
-              // loop()
+              loop()
               if (event.target.innerText != 'Start Race') {
-                noLoop()
+                // noLoop()
               }
               else {
-                console.log('hi')
+                mainTitle.innerHTML = 'RACE TIME'
+                selectedId = event.target.dataset.id
+                debugger
+                loop(selectedId)
+
+
+                console.log('start race was clicked')
+                mainTextArea.innerHTML = `<div align="center" id="reset-btn">
+                <a href="#" class="btn btn-primary btn-md active" style="background-color: black; border-color: black" role="button" aria-pressed="true">Reset Game</a></div>
+                `
+
+                resetBtn = document.querySelector('#reset-btn')
+                resetBtn.addEventListener('click', (event) => {
+                  // redraw()
+                  resetValues()
+                  loop()
+                  console.log('You pressed reset')
+                  // OPPONENTPOSITION = 0
+                  // }, 1000);
+                })
+
                 loop()
-                // setTimeout(function () {
-                //   remove()
-                // }, 2000);
               }
-              // redraw()
             })
           }
         })
@@ -132,7 +148,29 @@ const createTable = () => {
 // Add event listener to Records button
 recordsBtn.addEventListener('click', event => {
   mainTitle.innerHTML = "High Scores"
-
+  fetch("http://localhost:3000/records")
+  .then(res => res.json())
+  .then((allRecords) => {
+    mainTextArea.innerHTML = createTable()
+    let tableBody = document.querySelector('#table-body')
+    // remove()
+    allRecords.forEach(record => {
+      let userId = record.user_id
+      fetch("http://localhost:3000/users")
+      .then(res => res.json())
+      .then((users) => {
+        users.forEach(user => {
+          if (userId === user.id) {
+            tableBody.innerHTML += `<tr data-id="${user.id}">
+            <td>${user.name}</td>
+            <td>${record.id}</td>
+            <td>${record.wins}</td>
+            </tr>`
+          }
+        })
+      })
+    })
+  })
 })
 
 // Create HTML for users list
