@@ -1,18 +1,20 @@
-
 let car1;
+
+function preload(){
+  OPPONENTPOSITION = 0
+  PLAYERPOSITION = 0
+  TESTSPEED = 1.5
+  OPPPONENTSTESTSPEED = 1.5
+}
+
 
 function setup() {
     createCanvas(windowWidth, 408);
     backGround = loadImage('https://i.imgur.com/DXXpRi1.png')
     car1 = loadImage('https://images.vexels.com/media/users/3/139450/isolated/preview/ace6caf91a5498b7ba70a50195566614-race-car-speed-racing-by-vexels.png')
-    console.log(car1);
     car2 = loadImage('https://images.vexels.com/media/users/3/139450/isolated/preview/ace6caf91a5498b7ba70a50195566614-race-car-speed-racing-by-vexels.png')
     noLoop()
   }
-
-
-
-
 
 console.log('car1', car1)
 
@@ -24,14 +26,30 @@ fetch("http://localhost:3000/cars")
     let torque = `${car.torque}`
     console.log(`Horsepower: ${horsepower}`)
     console.log(`Torque: ${torque}`)
-    // debugger
-    // carCard.innerHTML += createCarCard(car)
   })
 })
 
 
-SPEED = 0
-PLAYERSPEED = 0
+
+
+function updateRecords(id, win){
+  fetch(`http://localhost:3000/records/${id}`, {
+  method: 'PATCH',
+  headers: {
+  "Content-Type": "application/json"
+},
+  body: JSON.stringify({wins: win})
+})
+}
+
+function getRecords(id) {
+  return fetch(`http://localhost:3000/records/${id}`)
+    .then(res => res.json())
+}
+
+// 
+// OPPONENTPOSITION = 0
+// PLAYERPOSITION = 0
 
 
 document.addEventListener("keydown", function(e) {
@@ -45,39 +63,40 @@ document.addEventListener("keydown", function(e) {
   }
 });
 
+
+
 // Set power of car
 const moveCar = (horsepower) => {
   if (horsepower < 200) {
-    PLAYERSPEED += 17
+    PLAYERPOSITION += 17
   }
   else if (horsepower >= 200 && horsepower < 350) {
-    PLAYERSPEED += 28
+    PLAYERPOSITION += 28
   }
   else if (horsepower >= 350 && horsepower < 500) {
-    PLAYERSPEED += 35
+    PLAYERPOSITION += 35
   }
   else if (horsepower >= 500) {
-    PLAYERSPEED += 50
+    PLAYERPOSITION += 50
   }
   else if (horsepower >= 700) {
-    PLAYERSPEED += 70
+    PLAYERPOSITION += 70
   }
 }
 
 
 function draw() {
-  // if (true) {
     background(backGround);
     fill(255);
     noStroke();
     textAlign(CENTER, CENTER);
     // text("use arrow keys, or SPACE to stop",
     // width/2, height*0.67);
-    image(car1, SPEED, 215, car1.width/6, car1.height/6)
-    SPEED += 10
-    image(car2, PLAYERSPEED, 270, car2.width/6, car2.height/6)
+    image(car1, OPPONENTPOSITION, 215, car1.width/6, car1.height/6)
+    OPPONENTPOSITION += 10
+    image(car2, PLAYERPOSITION, 270, car2.width/6, car2.height/6)
     // drawWords(width * 0.5)
-    if (SPEED > window.innerWidth){
+    if (OPPONENTPOSITION > window.innerWidth){
       textSize(75)
       textAlign(CENTER, CENTER)
       stroke('#222222');
@@ -85,70 +104,28 @@ function draw() {
       text("YOU LOST!",windowWidth / 2, 200)
       noLoop()
       }
-    else if (PLAYERSPEED > window.innerWidth) {
+    else if (PLAYERPOSITION > window.innerWidth) {
       textSize(75)
       textAlign(CENTER, CENTER)
       stroke('#222222');
       strokeWeight(4);
       text("YOU WON!", windowWidth / 2, 200)
-      fetch("http://localhost:3000/records")
-      .then(res => res.json())
-      .then((allRecords) => {
-        allRecords.forEach(record => {
-          console.log(record.user_id)
-        })
-     fetch(`http://localhost:3000/users`)
-        .then(res => res.json())
-        .then((users) => {
-          users.forEach((user) => {
-            debugger;
-            if (user.id) {}
-          })
-        })
-      })
 
+      getRecords(selectedId).then(record => {
+        console.log('FUCKME', record);
+        console.log('INCREASE')
+        record.wins++;
+        updateRecords(selectedId, record.wins)
 
-
-
-
-
-      // fetch(`http://localhost:3000/records/`,{
-        //   method: 'PATCH',
-        //   headers: {
-          //     'Content-Type': 'applica'
-          //   },
-          //   body: JSON.stringify({
-            //
-            //   })
-            // })
-
-      noLoop()
+      }); // returns a record object
+              noLoop()
       }
 }
 
-// function win(){
-//   if (SPEED > window.innerWidth){
-//     textSize(50)
-//     text("YOU LOST!",800,200)
-//     }
-//   else if (PLAYERSPEED > window.innerWidth) {
-//     textSize(50)
-//     text("YOU WON!", 800, 200)
-//     }
-// }
 
-
-// function drawWords(x){
-//   fill(0);
-//   text("YOU WON", 200,100)
-// }
-// function endGame(){
-//   console.log("hit here 1", PLAYERSPEED, window.innerWidth)
-//   if (SPEED > window.innerWidth){
-//     alert('YOU LOST!')
-//   }
-//   if (PLAYERSPEED >= window.innerWidth){
-//     console.log("hit here 2", window.innerWidth)
-//     alert("YOU WON!")
-//   }
-// }
+function resetValues(){
+  OPPONENTPOSITION = 0
+  PLAYERPOSITION = 0
+  TESTSPEED = 1.5
+  OPPPONENTSTESTSPEED = 1.5
+}
